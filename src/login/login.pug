@@ -2,11 +2,11 @@ doctype html
 
 html
     head
-        meta(charset="utf8")
-        title IAS - Integrated Application Skeleton
+        include ../public/jade/header
+        script(src="/login/login.js")
 
     body
-        form(action="/api/sampleLocalPassport", method="POST")
+        div(class="local-login")
             div
                 label User ID :
                 input(type="text", name="user_id")
@@ -14,6 +14,9 @@ html
                 label Password :
                 input(type="password", name="passwd")
             div
-                input(type="submit", value="Login")
+                button(onClick="login()") Login
+
         form(action="/api/sampleFacebookPassport", method="POST")
             input(type="submit", value="Facebook Login")
+
+        div(class="res")

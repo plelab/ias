@@ -1,8 +1,7 @@
 var ajaxGetSample = function () {
-    $ajax.request("http://localhost:27018/api/sampleAjax", {
-        method: "GET",
-        data: {ajax: "GET Sample"}
-    }, function (err, res) {
+    var data = {ajax: "GET Sample"};
+
+    $api.apiList.sample.get(data, function (err, res) {
         if (err)
             $("div.get_res").append(JSON.stringify(err));
         else
@@ -11,10 +10,9 @@ var ajaxGetSample = function () {
 };
 
 var ajaxPostSample = function () {
-    $ajax.request("http://localhost:27018/api/sampleAjax", {
-        method: "POST",
-        data: {ajax: "POST Sample"}
-    }, function (err, res) {
+    var data = {ajax: "POST Sample"};
+
+    $api.apiList.sample.post(data, function (err, res) {
         if (err)
             $("div.post_res").append(JSON.stringify(err));
         else

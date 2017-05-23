@@ -112,6 +112,15 @@ var compileFiles = function (event, filePath, basePath, srcRoot, dstPath) {
                 console.log("[%s_error] %s -> %s", event, filePath.replace(basePath, ""), newPath.replace(basePath, ""));
             });
     }
+    else {
+        var newPath = filePath.replace(basePath + "/" + srcRoot, basePath + "/" + dstPath);
+        var contents = fs.readFileSync(filePath, "utf8");
+
+        if (!fs.existsSync(path.dirname(newPath)))
+            mkdirp.sync(path.dirname(newPath));
+
+        fs.writeFileSync(newPath, contents, "utf8");
+    }
 };
 
 var createPugIncludeTree = function (srcRoot, metaDir, metaFile) {
@@ -133,7 +142,7 @@ var createPugIncludeTree = function (srcRoot, metaDir, metaFile) {
     if (!fs.existsSync(metaDir))
         mkdirp.sync(metaDir);
 
-    fs.writeFileSync(path.join(metaDir, "pug-tree.json"), JSON.stringify(pugIncludeTree), "utf8");
+    fs.writeFileSync(path.join(metaDir, metaFile), JSON.stringify(pugIncludeTree), "utf8");
 };
 
 var readIncludeInfo = function (filePath) {

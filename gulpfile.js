@@ -65,14 +65,33 @@ gulp.task("build", ["clean"], function () {
 });
 
 gulp.task("watch", ["build"], function () {
-    return gulpWatch(srcRoot, function (event) {
+    var compile = function (event) {
         var pugTree = JSON.parse(fs.readFileSync(path.join(metaDir, metaFile), "utf8"));
         var filePath = event.history[0];
         var parsedPath = filePath.replace(__dirname + "/", "");
 
         util.compileFiles(event.event, filePath, event.base, srcRoot, dstPath);
 
+        if (typeof pugTree[parsedPath] === "undefined")
+            return;
+
         for (var i = 0; i < pugTree[parsedPath].length; i++)
-            util.compileFiles(event.event, path.join(__dirname, pugTree[parsedPath][i]), event.base, srcRoot, dstPath);
+            util.compileFiles(event.event, path.join(event.base, pugTree[parsedPath][i]), event.base, srcRoot, dstPath);
+    };
+
+    var remove = function (event) {
+        var filePath = event.history[0];
+        filePath = filePath.replace(path.join(event.base, srcRoot), path.join(event.base, dstPath));
+        fs.unlinkSync(filePath);
+    };
+
+    return gulpWatch(srcRoot, function (event) {
+        switch (event.event) {
+            case "unlink" :
+                remove(event);
+                break;
+            default :
+                compile(event);
+        }
     });
 });

@@ -1,9 +1,9 @@
 {
   "name": "ias",
-  "version": "0.14.0",
+  "version": "0.15.0",
   "private": true,
   "scripts": {
-    "start": "node ias-cli"
+    "start": "node ias-cli run"
   },
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",

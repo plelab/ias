@@ -2,7 +2,6 @@ var path = require("path");
 var spawn = require("cross-spawn");
 
 var rootPath = path.basename(__dirname);
-var tempPath = __dirname.replace(rootPath, "");
 var expressPath = "express";
 
 var init = function () {
@@ -19,10 +18,10 @@ var init = function () {
     spawn.sync("npm", ["install"], {
         stdio: "inherit"
     });
+};
 
-    process.chdir("..");
-
-    spawn.sync("gulp", ["build"], {
+var clean = function () {
+    spawn.sync("gulp", ["clean"], {
         stdio: "inherit"
     });
 };
@@ -45,14 +44,28 @@ var run = function () {
     });
 };
 
+var help = function () {
+    console.log("Usage : node ias-cli.js [command]");
+    console.log("Command List : ");
+    console.log("init : Project initialization.(npm install, bower install, Angular2 Init)");
+    console.log("clean : Build Directory, distribution directory clean.(exclude node_modules)");
+    console.log("build : build of pug, less files.");
+    console.log("watch : Tracking src directory.");
+    console.log("run : Execution of web server.(Distribution Version.)");
+    console.log("help : ias-cli help.");
+};
+
 if (process.argv.length == 2) {
-    run();
+    help();
     return;
 }
 
 switch (process.argv[2]) {
     case "init":
         init();
+        break;
+    case "clean":
+        clean();
         break;
     case "build":
         build();
@@ -62,5 +75,8 @@ switch (process.argv[2]) {
         break;
     case "run":
         run();
+        break;
+    case "help":
+        help();
         break;
 }

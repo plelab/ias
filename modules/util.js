@@ -5,7 +5,7 @@ var pug = require("pug");
 var less = require("less");
 var gulpUtil = require("gulp-util");
 
-var findFiles = function (rootPath, extension, res, verbose) {
+var findFiles = function (rootPath, extension, excludeFiles, res, verbose) {
     if (!fs.existsSync(rootPath))
         return;
 
@@ -16,8 +16,20 @@ var findFiles = function (rootPath, extension, res, verbose) {
         var fileStat = fs.lstatSync(filePath);
 
         if (fileStat.isDirectory())
-            findFiles(filePath, extension, res, verbose);
+            findFiles(filePath, extension, excludeFiles, res, verbose);
         else {
+            var flag = false;
+
+            for (var j = 0; j < excludeFiles.length; j++) {
+                if (filePath == excludeFiles[j]) {
+                    flag = true;
+                    break;
+                }
+            }
+
+            if (flag)
+                continue;
+
             if (verbose)
                 console.log("[find] " + filePath);
 
@@ -106,7 +118,7 @@ var createPugIncludeTree = function (srcRoot, metaDir, metaFile) {
     var pugFiles = [];
     var pugIncludeTree = {};
 
-    findFiles(srcRoot, ".pug", pugFiles, false);
+    findFiles(srcRoot, ".pug", [], pugFiles, false);
 
     for (var i = 0; i < pugFiles.length; i++) {
         var includeInfo = readIncludeInfo(pugFiles[i]);

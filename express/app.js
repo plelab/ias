@@ -3,7 +3,12 @@ var path = require("path");
 var express = require("express");
 var cookieParser = require("cookie-parser");
 var bodyParser = require("body-parser");
-var util = require("./libs/util");
+var passport = require("passport");
+var flash = require("connect-flash");
+
+/* Import User Library */
+var util = require("../modules/util");
+var passportConfig = require("../modules/passport/passportConfig");
 
 /* Getting App Object */
 var app = express();
@@ -17,8 +22,15 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 
+/* Setting Passport */
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(flash());
+passportConfig.init(passport);
+app.use(passportConfig.middleware(passport));
+
 var apiList = [];
-util.findFiles("./api", ".js", apiList, false);
+util.findFiles("./api", ".js", [], apiList, false);
 
 for (var i = 0; i < apiList.length; i++) {
     var routePath = path.join("/", apiList[i]).replace(/\.js$/gim, "");
@@ -38,7 +50,7 @@ app.use(function (req, res, next) {
 app.use(function (err, req, res, next) {
     res.status(err.status || 500);
 
-    var error = require("./libs/error");
+    var error = require("../modules/error");
     var handler = "status" + err.status;
 
     if (error.hasOwnProperty("status" + err.status)) {

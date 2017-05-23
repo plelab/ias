@@ -6,7 +6,7 @@ var gulpWatch = require("gulp-watch");
 var pug = require("pug");
 var less = require("less");
 var through2 = require("through2");
-var util = require("./express/libs/util");
+var util = require("./modules/util");
 
 var srcPath = ["./src/**/*"];
 var srcRoot = "src";

@@ -4,5 +4,13 @@
   "express": {
     /* Setting Your Port */
     "port": 80
+  },
+  /* Setting Your Facebook App Information */
+  "auth": {
+    "facebook": {
+      "clientID": "0000",
+      "clientSecret": "00000000",
+      "callbackURL": "/path/to/your/callback/url"
+    }
   }
 }

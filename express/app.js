@@ -1,4 +1,5 @@
 /* Import Library */
+var fs = require("fs");
 var path = require("path");
 var express = require("express");
 var cookieParser = require("cookie-parser");
@@ -8,13 +9,16 @@ var flash = require("connect-flash");
 
 /* Import User Library */
 var util = require("../modules/util");
-var passportConfig = require("../modules/passport/passportConfig");
+var passportConfig = require("../modules/passport");
+
+/* Define User Settings */
+var expressPath = "express";
+var serviceConfig = JSON.parse(fs.readFileSync(path.join(expressPath, "config.json"), "utf8"));
 
 /* Getting App Object */
 var app = express();
 
 /* Setting Static Directory */
-var expressPath = "express";
 app.use(express.static(path.join(__dirname.replace(new RegExp(expressPath + "$", "gim"), ""), "www")));
 
 /* Setting Cookie / Body Parser */

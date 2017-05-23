@@ -1,5 +1,8 @@
 var path = require("path");
-var util = require("../util");
+var util = require("./util");
+
+var passportPath = "modules/passport";
+var passportRoot = "passport";
 
 var init = function (passport) {
     passport.serializeUser(function (user, done) {
@@ -11,11 +14,11 @@ var init = function (passport) {
     });
 
     var passportList = [];
-    util.findFiles("./modules/passport", ".js", ["modules/passport/passportConfig.js"], passportList, false);
+    util.findFiles(passportPath, ".js", [], passportList, false);
 
     for (var i = 0; i < passportList.length; i++) {
         var passportName = path.basename(passportList[i]).replace(/.js$/gim, "");
-        passport.use(passportName, require("./" + passportName));
+        passport.use(passportName, require("./" + passportRoot + "/" + passportName));
         console.log("[passport] %s(%s)", passportName, "./" + passportName);
     }
 };
@@ -25,7 +28,7 @@ var middleware = function (passport) {
         req.passport = passport;
         next();
     }
-}
+};
 
 var passportConfig = {};
 passportConfig.init = init;

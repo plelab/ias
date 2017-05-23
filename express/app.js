@@ -9,6 +9,7 @@ var flash = require("connect-flash");
 
 /* Import User Library */
 var util = require("../modules/util");
+var mysql = require("../modules/mysql");
 var passportConfig = require("../modules/passport");
 
 /* Define User Settings */
@@ -25,6 +26,9 @@ app.use(express.static(path.join(__dirname.replace(new RegExp(expressPath + "$",
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
+
+/* Setting Database */
+app.use(mysql.init(serviceConfig));
 
 /* Setting Passport */
 app.use(passport.initialize());

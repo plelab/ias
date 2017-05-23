@@ -1,12 +1,13 @@
 {
   "name": "ias",
-  "version": "0.8.0",
+  "version": "0.9.0",
   "private": true,
   "scripts": {
     "start": "node ./express/www"
   },
   "dependencies": {
     "express": "^4.15.2",
+    "mysql": "^2.13.0",
     "passport-facebook": "^2.1.1",
     "passport-local": "^1.0.0"
   },

@@ -5,6 +5,16 @@
     /* Setting Your Port */
     "port": 80
   },
+  "mysql": {
+    /* Setting Your Database Information */
+    "connectionLimit": 100,
+    "host": "127.0.0.1",
+    "port": "3306",
+    "user": "your_user",
+    "password": "your_password",
+    "database": "your_database",
+    "debug": false
+  },
   /* Setting Your Facebook App Information */
   "auth": {
     "facebook": {

@@ -1,6 +1,6 @@
 {
   "name": "ias",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "private": true,
   "scripts": {
     "start": "node ./express/www"
@@ -11,7 +11,9 @@
   "devDependencies": {
     "gulp": "^3.9.1",
     "gulp-util": "^3.0.8",
+    "gulp-watch": "^4.3.11",
     "less": "^2.7.2",
+    "mkdirp": "^0.5.1",
     "pug": "^2.0.0-rc.1",
     "through2": "^2.0.3"
   }

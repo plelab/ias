@@ -1,0 +1,17 @@
+doctype html
+
+html
+    head
+        meta(charset="utf8")
+        title IAS - Integrated Application Skeleton
+
+        script(src="/libs/jquery/dist/jquery.js")
+        script(src="/public/js/ajax.js")
+        script(src="/ajax/ajax.js")
+
+    body
+        button(onclick="ajaxGetSample()") AJAX GET Sample
+        div(class="get_res")
+
+        button(onclick="ajaxPostSample()") AJAX POST Sample
+        div(class="post_res")

@@ -2,8 +2,19 @@
 
 {
   "express": {
-    /* Setting Your Port */
+    /* Setting Your Port Information */
     "port": 80
+  },
+  "session": {
+    /* Setting Your Session Information */
+    "secret": "sEcReT",
+    "resave": false,
+    "saveUninitialized": true
+  },
+  "redis": {
+    /* Setting Your Redis Information */
+    "host": "127.0.0.1",
+    "port": 6379
   },
   "mysql": {
     /* Setting Your Database Information */
@@ -15,8 +26,8 @@
     "database": "your_database",
     "debug": false
   },
-  /* Setting Your Facebook App Information */
   "auth": {
+    /* Setting Your Facebook App Information */
     "facebook": {
       "clientID": "0000",
       "clientSecret": "00000000",

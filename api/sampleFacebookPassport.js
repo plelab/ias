@@ -17,7 +17,9 @@ router.get("/", function (req, res, next) {
             return;
         }
 
-        res.send({status: true, code: 2, contents: user});
+        req.logIn(user, function () {
+            res.send({status: true, code: 2, contents: user});
+        });
     })(req, res, next);
 });
 

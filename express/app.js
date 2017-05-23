@@ -4,6 +4,9 @@ var path = require("path");
 var express = require("express");
 var cookieParser = require("cookie-parser");
 var bodyParser = require("body-parser");
+var session = require("express-session");
+var RedisStore = require("connect-redis")(session);
+var Redis = require("ioredis");
 var passport = require("passport");
 var flash = require("connect-flash");
 
@@ -23,12 +26,20 @@ var app = express();
 app.use(express.static(path.join(__dirname.replace(new RegExp(expressPath + "$", "gim"), ""), "www")));
 
 /* Setting Cookie / Body Parser */
+app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
-app.use(cookieParser());
 
 /* Setting Database */
 app.use(mysql.init(serviceConfig));
+
+/* Setting Redis Session */
+app.use(session({
+    store: new RedisStore({client: new Redis(serviceConfig.redis)}),
+    secret: serviceConfig.session.secret,
+    resave: serviceConfig.session.resave,
+    saveUninitialized: serviceConfig.session.saveUninitialized
+}));
 
 /* Setting Passport */
 app.use(passport.initialize());

@@ -46,7 +46,7 @@ app.use(function (err, req, res, next) {
         return;
     }
 
-    res.status(err.status).send({"status": 500, "message": err.message, "stack": err.stack});
+    res.send({"status": 500, "message": err.message, "stack": err.stack});
 });
 
 module.exports = app;

@@ -120,6 +120,7 @@ var compileFiles = function (event, filePath, basePath, srcRoot, dstPath) {
             mkdirp.sync(path.dirname(newPath));
 
         fs.writeFileSync(newPath, contents, "utf8");
+        console.log("[%s] %s -> %s", event, filePath.replace(basePath, ""), newPath.replace(basePath, ""));
     }
 };
 

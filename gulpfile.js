@@ -35,26 +35,27 @@ gulp.task("build", ["clean"], function () {
                     file.path = newPath;
                     file.contents = new Buffer(pug.compileFile(filePath)());
 
-                    console.log("[build] %s -> %s", file.path.replace(__dirname, ""), newPath.replace(__dirname + "/" + srcRoot, "/" + dstPath));
+                    console.log("[build] %s -> %s", filePath.replace(__dirname, ""), newPath.replace(__dirname + "/" + srcRoot, "/" + dstPath));
                 } catch (excep) {
                     file.contents = new Buffer(JSON.stringify(excep, null, 2));
-                    console.log("[build_error] %s -> %s", file.path.replace(__dirname, ""), newPath.replace(__dirname + "/" + srcRoot, "/" + dstPath));
+                    console.log("[build_error] %s -> %s", filePath.replace(__dirname, ""), newPath.replace(__dirname + "/" + srcRoot, "/" + dstPath));
                 }
 
                 callback(null, file);
             }
             else if ((/\.less/gim).test(file.path)) {
+                var filePath = file.path;
                 var newPath = gulpUtil.replaceExtension(file.path, ".css");
 
                 file.path = newPath;
                 less.render(String(file.contents), {compress: true})
                     .then(function (output) {
                         file.contents = new Buffer(output.css);
-                        console.log("[build] %s -> %s", file.path.replace(__dirname, ""), newPath.replace(__dirname + "/" + srcRoot, "/" + dstPath));
+                        console.log("[build] %s -> %s", filePath.replace(__dirname, ""), newPath.replace(__dirname + "/" + srcRoot, "/" + dstPath));
                         callback(null, file);
                     }, function (err) {
                         file.contents = new Buffer(JSON.stringify(err, null, 2));
-                        console.log("[build_error] %s -> %s", file.path.replace(__dirname, ""), newPath.replace(__dirname + "/" + srcRoot, "/" + dstPath));
+                        console.log("[build_error] %s -> %s", filePath.replace(__dirname, ""), newPath.replace(__dirname + "/" + srcRoot, "/" + dstPath));
                         callback(null, file);
                     });
             }
@@ -82,7 +83,12 @@ gulp.task("watch", ["build"], function () {
     var remove = function (event) {
         var filePath = event.history[0];
         filePath = filePath.replace(path.join(event.base, srcRoot), path.join(event.base, dstPath));
-        fs.unlinkSync(filePath);
+
+        try {
+            fs.unlinkSync(filePath);
+        } catch (excep) {
+            console.log("[unlink_err] " + filePath);
+        }
     };
 
     return gulpWatch(srcRoot, function (event) {

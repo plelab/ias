@@ -5,8 +5,10 @@ var pug = require("pug");
 var less = require("less");
 var through2 = require("through2");
 
-gulp.task("views", function buildHTML() {
-    return gulp.src("./src/**/*")
+var srcPath = ["./src/**/*"];
+
+gulp.task("file", function buildHTML() {
+    return gulp.src(srcPath)
         .pipe(through2.obj(function (file, encoding, callback) {
             if ((/\.pug/gim).test(file.path)) {
                 file.contents = new Buffer(pug.compileFile(file.path)());

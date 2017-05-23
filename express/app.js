@@ -8,8 +8,9 @@ var util = require("./libs/util");
 /* Getting App Object */
 var app = express();
 
-/* Setting Distribution Directory */
-app.use(express.static(path.join(__dirname, "www")));
+/* Setting Static Directory */
+var expressPath = "express";
+app.use(express.static(path.join(__dirname.replace(new RegExp(expressPath + "$", "gim"), ""), "www")));
 
 /* Setting Cookie / Body Parser */
 app.use(bodyParser.json());
@@ -21,7 +22,7 @@ util.dirTraversal("./api", apiList);
 
 for (var i = 0; i < apiList.length; i++) {
     var routePath = path.join("/", apiList[i]).replace(/\.js$/gim, "");
-    var apiPath = "./" + apiList[i];
+    var apiPath = "../" + apiList[i];
     app.use(routePath, require(apiPath));
     console.log("[api] %s(%s)", routePath, apiPath);
 }

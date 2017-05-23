@@ -1,4 +1,6 @@
 .DS_STORE
 .idea
 npm-debug.log
+config.json
 node_modules
+www

@@ -14,7 +14,7 @@ router.post("/", function (req, res, next) {
         }
 
         req.logIn(user, function () {
-            res.send({status: true, code: 2, contents: user});
+            res.send({status: true, code: 2, contents: info});
         });
     })(req, res, next);
 });

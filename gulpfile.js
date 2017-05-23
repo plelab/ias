@@ -11,16 +11,20 @@ var util = require("./express/libs/util");
 var srcPath = ["./src/**/*"];
 var srcRoot = "src";
 var dstPath = "www";
-var bowerPath = "./.bowerrc";
+var bowerrcPath = ".bowerrc";
+var metaDir = path.join(__dirname, ".ias");
+var metaFile = "pug-tree.json";
 
 gulp.task("default", ["build", "watch"]);
 
 gulp.task("clean", function () {
-    var bowerPath = JSON.parse(fs.readFileSync(".bowerrc", "utf8"));
-    util.dirRemoveTraversal(dstPath, [bowerPath.directory], true);
+    var bowerPath = JSON.parse(fs.readFileSync(bowerrcPath, "utf8"));
+    util.recursiveRmdir(dstPath, [bowerPath.directory], true);
 });
 
 gulp.task("build", ["clean"], function () {
+    util.createPugIncludeTree(srcRoot, metaDir, metaFile);
+
     return gulp.src(srcPath)
         .pipe(through2.obj(function (file, encoding, callback) {
             if ((/\.pug/gim).test(file.path)) {
@@ -62,6 +66,13 @@ gulp.task("build", ["clean"], function () {
 
 gulp.task("watch", ["build"], function () {
     return gulpWatch(srcRoot, function (event) {
-        util.compileFiles(event.event, event.history[0], event.base, srcRoot, dstPath);
+        var pugTree = JSON.parse(fs.readFileSync(path.join(metaDir, metaFile), "utf8"));
+        var filePath = event.history[0];
+        var parsedPath = filePath.replace(__dirname + "/", "");
+
+        util.compileFiles(event.event, filePath, event.base, srcRoot, dstPath);
+
+        for (var i = 0; i < pugTree[parsedPath].length; i++)
+            util.compileFiles(event.event, path.join(__dirname, pugTree[parsedPath][i]), event.base, srcRoot, dstPath);
     });
 });

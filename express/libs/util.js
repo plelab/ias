@@ -5,7 +5,7 @@ var pug = require("pug");
 var less = require("less");
 var gulpUtil = require("gulp-util");
 
-var dirTraversal = function (rootPath, paths, verbose) {
+var findFiles = function (rootPath, extension, res, verbose) {
     if (!fs.existsSync(rootPath))
         return;
 
@@ -16,17 +16,18 @@ var dirTraversal = function (rootPath, paths, verbose) {
         var fileStat = fs.lstatSync(filePath);
 
         if (fileStat.isDirectory())
-            dirTraversal(filePath, paths);
+            findFiles(filePath, extension, res, verbose);
         else {
             if (verbose)
-                console.log("[Traversal] " + filePath);
+                console.log("[find] " + filePath);
 
-            paths.push(filePath);
+            if (new RegExp(extension + "$", "gim").test(filePath))
+                res.push(filePath);
         }
     }
 };
 
-var dirRemoveTraversal = function (rootPath, excludePath, verbose) {
+var recursiveRmdir = function (rootPath, excludePath, verbose) {
     if (!fs.existsSync(rootPath))
         return;
 
@@ -49,7 +50,7 @@ var dirRemoveTraversal = function (rootPath, excludePath, verbose) {
             if (flag)
                 continue;
 
-            dirRemoveTraversal(filePath, excludePath, verbose);
+            recursiveRmdir(filePath, excludePath, verbose);
         }
         else {
             if ((/\.html$/gim).test(filePath) || (/\.css$/gim).test(filePath)) {
@@ -74,10 +75,10 @@ var compileFiles = function (event, filePath, basePath, srcRoot, dstPath) {
                 mkdirp.sync(path.dirname(newPath));
 
             fs.writeFileSync(newPath, pug.compileFile(filePath)(), "utf8");
-            console.log("[%s] %s -> %s", event, filePath.replace(basePath, ""), newPath);
+            console.log("[%s] %s -> %s", event, filePath.replace(basePath, ""), newPath.replace(basePath, ""));
         } catch (excep) {
             fs.writeFileSync(newPath, JSON.stringify(excep, null, 2), "utf8");
-            console.log("[%s_error] %s -> %s", event, filePath.replace(basePath, ""), newPath);
+            console.log("[%s_error] %s -> %s", event, filePath.replace(basePath, ""), newPath.replace(basePath, ""));
         }
     }
     else if ((/\.less/gim).test(filePath)) {
@@ -90,20 +91,67 @@ var compileFiles = function (event, filePath, basePath, srcRoot, dstPath) {
                     mkdirp.sync(path.dirname(newPath));
 
                 fs.writeFileSync(newPath, output.css, "utf8");
-                console.log("[%s] %s -> %s", event, filePath.replace(basePath, ""), newPath);
+                console.log("[%s] %s -> %s", event, filePath.replace(basePath, ""), newPath.replace(basePath, ""));
             }, function (err) {
                 if (!fs.existsSync(path.dirname(newPath)))
                     mkdirp.sync(path.dirname(newPath));
 
                 fs.writeFileSync(newPath, JSON.stringify(err, null, 2), "utf8");
-                console.log("[%s_error] %s -> %s", event, filePath.replace(basePath, ""), newPath);
+                console.log("[%s_error] %s -> %s", event, filePath.replace(basePath, ""), newPath.replace(basePath, ""));
             });
     }
 };
 
+var createPugIncludeTree = function (srcRoot, metaDir, metaFile) {
+    var pugFiles = [];
+    var pugIncludeTree = {};
+
+    findFiles(srcRoot, ".pug", pugFiles, false);
+
+    for (var i = 0; i < pugFiles.length; i++) {
+        var includeInfo = readIncludeInfo(pugFiles[i]);
+
+        if (!includeInfo)
+            continue;
+
+        parseIncludeInfo(pugFiles[i], includeInfo);
+        createIncludeTree(pugFiles[i], includeInfo, pugIncludeTree);
+    }
+
+    if (!fs.existsSync(metaDir))
+        mkdirp.sync(metaDir);
+
+    fs.writeFileSync(path.join(metaDir, "pug-tree.json"), JSON.stringify(pugIncludeTree), "utf8");
+};
+
+var readIncludeInfo = function (filePath) {
+    var contents = fs.readFileSync(filePath, "utf8");
+    contents = contents.replace(/[\/]{2,}[\s\t]*include[\s\t]+[^\n]{1,}/gim, "");
+    var includeInfo = contents.match(/include[\s\t]+[^\n]{1,}/gim);
+
+    return includeInfo;
+};
+
+var parseIncludeInfo = function (filePath, info) {
+    for (var i = 0; i < info.length; i++) {
+        info[i] = (/include[\s\t]+([^\n]{1,})/gim).exec(info[i])[1];
+        info[i] = path.join(path.dirname(filePath), info[i]);
+    }
+};
+
+var createIncludeTree = function (filePath, info, res) {
+    for (var i = 0; i < info.length; i++) {
+        if (res.hasOwnProperty(info[i]))
+            res[info[i]].push(filePath);
+        else
+            res[info[i]] = [filePath];
+    }
+}
+
 var util = {};
-util.dirTraversal = dirTraversal;
-util.dirRemoveTraversal = dirRemoveTraversal;
+util.findFiles = findFiles;
+util.recursiveRmdir = recursiveRmdir;
 util.compileFiles = compileFiles;
+util.createPugIncludeTree = createPugIncludeTree;
 
 module.exports = util;

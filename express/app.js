@@ -18,7 +18,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 
 var apiList = [];
-util.dirTraversal("./api", apiList, false);
+util.findFiles("./api", ".js", apiList, false);
 
 for (var i = 0; i < apiList.length; i++) {
     var routePath = path.join("/", apiList[i]).replace(/\.js$/gim, "");

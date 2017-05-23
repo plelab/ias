@@ -1,0 +1,14 @@
+doctype html
+
+html
+    head
+        meta(charset="utf8")
+        title IAS - Integrated Application Skeleton
+
+    body
+        form(action="/api/sampleFileUpload", enctype="multipart/form-data", method="POST")
+            div
+                h1 File Upload
+                input(type="file", name="picture")
+            div
+                input(type="submit", value="Upload")

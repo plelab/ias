@@ -158,7 +158,7 @@ var createIncludeTree = function (filePath, info, res) {
         else
             res[info[i]] = [filePath];
     }
-}
+};
 
 var util = {};
 util.findFiles = findFiles;

@@ -26,6 +26,12 @@
     "database": "your_database",
     "debug": false
   },
+  "file": {
+    /* Setting Your File Upload Information */
+    "destination": "/path/to/your/file/destination",
+    "fileLimit": 100,
+    "fileSizeLimit": 1073741824
+  },
   "auth": {
     /* Setting Your Facebook App Information */
     "facebook": {

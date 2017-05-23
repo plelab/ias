@@ -34,8 +34,7 @@ app.use(mysql.init(serviceConfig));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
-passportConfig.init(passport);
-app.use(passportConfig.middleware(passport));
+app.use(passportConfig.initialize(passport));
 
 var apiList = [];
 util.findFiles("./api", ".js", [], apiList, false);

@@ -4,7 +4,7 @@ var util = require("./util");
 var passportPath = "modules/passport";
 var passportRoot = "passport";
 
-var init = function (passport) {
+var initialize = function (passport) {
     passport.serializeUser(function (user, done) {
         done(null, user);
     });
@@ -21,9 +21,7 @@ var init = function (passport) {
         passport.use(passportName, require("./" + passportRoot + "/" + passportName));
         console.log("[passport] %s(%s)", passportName, "./" + passportName);
     }
-};
 
-var middleware = function (passport) {
     return function (req, res, next) {
         req.passport = passport;
         next();
@@ -31,7 +29,6 @@ var middleware = function (passport) {
 };
 
 var passportConfig = {};
-passportConfig.init = init;
-passportConfig.middleware = middleware;
+passportConfig.initialize = initialize;
 
 module.exports = passportConfig;

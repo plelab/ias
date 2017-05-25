@@ -1,6 +1,6 @@
 {
   "name": "ias",
-  "version": "0.18.0",
+  "version": "0.19.0",
   "private": true,
   "scripts": {
     "start": "node ias-cli run"
@@ -9,6 +9,7 @@
     "bcrypt-nodejs": "0.0.3",
     "cross-spawn": "^5.1.0",
     "express": "^4.15.2",
+    "mongoose": "^4.10.2",
     "multer": "^1.3.0",
     "mysql": "^2.13.0",
     "passport-facebook": "^2.1.1",

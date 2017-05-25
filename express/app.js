@@ -13,6 +13,7 @@ var flash = require("connect-flash");
 /* Import User Library */
 var util = require("../modules/util");
 var mysql = require("../modules/mysql");
+var mongo = require("../modules/mongo");
 var passportConfig = require("../modules/passport");
 
 /* Define User Settings */
@@ -31,7 +32,11 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
 /* Setting Database */
-app.use(mysql.init(serviceConfig));
+if (serviceConfig.mysql.use)
+    app.use(mysql.init(serviceConfig));
+
+if (serviceConfig.mongo.use)
+    app.use(mongo.init(serviceConfig));
 
 /* Setting Redis Session */
 app.use(session({

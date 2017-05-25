@@ -24,7 +24,15 @@
     "user": "your_user",
     "password": "your_password",
     "database": "your_database",
-    "debug": false
+    "debug": false,
+    "use": false
+  },
+  "mongo": {
+    /* Setting Your Database Information */
+    "host": "mongodb://127.0.0.1",
+    "port": "27017",
+    "database": "your_database",
+    "use": true
   },
   "file": {
     /* Setting Your File Upload Information */

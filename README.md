@@ -22,11 +22,23 @@ Install NodeJS from [NodeJS Official Site](https://nodejs.org/)
             # npm install -g bower
         ```
 
+    - gulp
+
+        ```
+            # npm install -g gulp
+        ```
+
 - ETC
     - MySQL
 
         ```
             # brew install mysql
+        ```
+
+    - MongoDB
+
+        ```
+            # brew install mongodb
         ```
 
     - Redis
@@ -53,11 +65,11 @@ Install NodeJS from [NodeJS Official Site](https://nodejs.org/)
 - View Files Path
 
     ```
-src : The path of src matches the path of URL.
+        src : The path of src matches the path of URL.
     ```
 
 - API Files Path
 
     ```
-api : The path of API matches the path of API URL.
+        api : The path of API matches the path of API URL.
     ```

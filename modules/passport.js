@@ -18,8 +18,9 @@ var initialize = function (passport) {
 
     for (var i = 0; i < passportList.length; i++) {
         var passportName = path.basename(passportList[i]).replace(/.js$/gim, "");
-        passport.use(passportName, require("./" + passportRoot + "/" + passportName));
-        console.log("[passport] %s(%s)", passportName, "./" + passportName);
+        var passportMappingPath = "./" + passportRoot + "/" + passportName;
+        passport.use(passportName, require(passportMappingPath));
+        console.log("[passport] %s(%s)", passportName, passportMappingPath + ".js");
     }
 
     return function (req, res, next) {

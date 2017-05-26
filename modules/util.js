@@ -79,7 +79,7 @@ var recursiveRmdir = function (rootPath, excludePath, verbose) {
 };
 
 var compileFiles = function (event, filePath, basePath, srcRoot, dstPath) {
-    if ((/\.pug/gim).test(filePath)) {
+    if ((/\.pug$/gim).test(filePath)) {
         try {
             var newPath = gulpUtil.replaceExtension(filePath, ".html").replace(basePath + "/" + srcRoot, basePath + "/" + dstPath);
 
@@ -93,7 +93,7 @@ var compileFiles = function (event, filePath, basePath, srcRoot, dstPath) {
             console.log("[%s_error] %s -> %s", event, filePath.replace(basePath, ""), newPath.replace(basePath, ""));
         }
     }
-    else if ((/\.less/gim).test(filePath)) {
+    else if ((/\.less$/gim).test(filePath)) {
         var contents = fs.readFileSync(filePath, "utf8");
         var newPath = gulpUtil.replaceExtension(filePath, ".css").replace(basePath + "/" + srcRoot, basePath + "/" + dstPath);
 
@@ -157,7 +157,7 @@ var readIncludeInfo = function (filePath) {
 var parseIncludeInfo = function (filePath, info) {
     for (var i = 0; i < info.length; i++) {
         info[i] = (/include[\s\t]+([^\n]{1,})/gim).exec(info[i])[1];
-        info[i] = path.join(path.dirname(filePath), info[i]);
+        info[i] = path.join(path.dirname(filePath), info[i]).replace(/.pug$/gim, "");
     }
 };
 

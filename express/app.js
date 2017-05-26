@@ -33,10 +33,10 @@ app.use(bodyParser.urlencoded({extended: false}));
 
 /* Setting Database */
 if (serviceConfig.mysql.use)
-    app.use(mysql.init(serviceConfig));
+    app.use(mysql.initialize(serviceConfig));
 
 if (serviceConfig.mongo.use)
-    app.use(mongo.init(serviceConfig));
+    app.use(mongo.initialize(serviceConfig));
 
 /* Setting Redis Session */
 app.use(session({

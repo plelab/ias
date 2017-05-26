@@ -1,6 +1,6 @@
 var mysql = require("mysql");
 
-var init = function (config) {
+var initialize = function (config) {
     var pool = mysql.createPool({
         connectionLimit: config.mysql.connectionLimit,
         host: config.mysql.host,
@@ -46,6 +46,6 @@ var init = function (config) {
 };
 
 var obj = {};
-obj.init = init;
+obj.initialize = initialize;
 
 module.exports = obj;

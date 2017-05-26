@@ -1,6 +1,6 @@
 var mongoose = require("mongoose");
 
-var init = function (config) {
+var initialize = function (config) {
     return function (req, res, next) {
         var conn = mongoose.createConnection(config.mongo.host + ":" + config.mongo.port + "/" + config.mongo.database);
 
@@ -25,6 +25,6 @@ var init = function (config) {
 };
 
 var obj = {};
-obj.init = init;
+obj.initialize = initialize;
 
 module.exports = obj;

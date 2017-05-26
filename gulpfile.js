@@ -27,7 +27,7 @@ gulp.task("build", ["clean"], function () {
 
     return gulp.src(srcPath)
         .pipe(through2.obj(function (file, encoding, callback) {
-            if ((/\.pug/gim).test(file.path)) {
+            if ((/\.pug$/gim).test(file.path)) {
                 try {
                     var filePath = file.path;
                     var newPath = gulpUtil.replaceExtension(file.path, ".html");
@@ -43,7 +43,7 @@ gulp.task("build", ["clean"], function () {
 
                 callback(null, file);
             }
-            else if ((/\.less/gim).test(file.path)) {
+            else if ((/\.less$/gim).test(file.path)) {
                 var filePath = file.path;
                 var newPath = gulpUtil.replaceExtension(file.path, ".css");
 
@@ -69,7 +69,7 @@ gulp.task("watch", ["build"], function () {
     var compile = function (event) {
         var pugTree = JSON.parse(fs.readFileSync(path.join(metaDir, metaFile), "utf8"));
         var filePath = event.history[0];
-        var parsedPath = filePath.replace(__dirname + "/", "");
+        var parsedPath = filePath.replace(__dirname + "/", "").replace(/.pug$/gim, "");
 
         util.compileFiles(event.event, filePath, event.base, srcRoot, dstPath);
 
@@ -92,6 +92,8 @@ gulp.task("watch", ["build"], function () {
     };
 
     return gulpWatch(srcRoot, function (event) {
+        util.createPugIncludeTree(srcRoot, metaDir, metaFile);
+
         switch (event.event) {
             case "unlink" :
                 remove(event);

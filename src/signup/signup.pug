@@ -1,0 +1,26 @@
+doctype html
+
+html
+    head
+        include ../public/jade/header
+        script(src="/signup/signup.js")
+
+    body
+        div
+            input(type="text", name="user_id", placeholder="User ID")
+        div
+            input(type="password", name="passwd", placeholder="Password")
+        div
+            input(type="password", name="chkPasswd", placeholder="Check Password")
+        div
+            input(type="text", name="user_name", placeholder="Username")
+        div
+            input(type="text", name="birth", placeholder="1900-01-01")
+        div
+            input(type="text", name="gender", placeholder="남/여")
+        div
+            input(type="text", name="phone", placeholder="010-1234-5678")
+        div
+            input(type="text", name="email", placeholder="email@email.com")
+        div
+            button(type="button", onClick="signup()") Sign Up

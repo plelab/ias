@@ -9,6 +9,7 @@ var RedisStore = require("connect-redis")(session);
 var Redis = require("ioredis");
 var passport = require("passport");
 var flash = require("connect-flash");
+var cors = require("cors");
 
 /* Import User Library */
 var util = require("../modules/util");
@@ -37,6 +38,9 @@ if (serviceConfig.mysql.use)
 
 if (serviceConfig.mongo.use)
     app.use(mongo.initialize(serviceConfig));
+
+/* Setting Cross Domain Issue */
+app.use(cors());
 
 /* Setting Redis Session */
 app.use(session({

@@ -2,6 +2,8 @@
 var fs = require("fs");
 var app = require("./app");
 var http = require("http");
+var socketio = require("socket.io");
+var socket = require("../modules/socket");
 
 /* Configuration Loading */
 var config = JSON.parse(fs.readFileSync("./express/config.json"));
@@ -13,6 +15,10 @@ app.set('port', port);
 /* Listening */
 var server = http.createServer(app);
 server.listen(port);
+
+/* WebSocket Listening */
+var io = socketio.listen(server);
+socket.initialize(io);
 
 /* Event Registration */
 server.on('error', onError);

@@ -1,0 +1,24 @@
+doctype html
+
+html
+    head
+        include ../public/jade/header
+        script(src="/socket/socket.js")
+
+    body
+        div
+            input(type="text", id="host", placeholder="127.0.0.1")
+        div
+            input(type="text", id="port", placeholder="27018")
+        div
+            button(onclick="connect()") Connect
+
+        div.connect_res
+
+        div
+            input(type="text", id="msg", placeholder="Message")
+        div
+            button(onclick="sendMessage()") Send Message
+
+        div.send_res
+        div.recv_res

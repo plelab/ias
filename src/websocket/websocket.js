@@ -1,11 +1,10 @@
-var socketUrl = null;
 var socket = null;
 
 var connect = function () {
     var host = $("#host").val();
     var port = $("#port").val();
 
-    socketUrl = "http://" + host + ":" + port;
+    var socketUrl = "http://" + host + ":" + port;
 
     socket = io.connect(socketUrl, {"forceNew": true});
 

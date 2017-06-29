@@ -18,15 +18,15 @@ var $api = {
             }
         },
         users: {
-            signin: function (query, callback) {
-                var apiPath = "/api/users/signin";
+            signup: function (query, callback) {
+                var apiPath = "/api/users/signup";
 
                 $ajax.request($api.apiUrl + apiPath, {method: "POST", data: query}, function (err, res) {
                     callback(err, res);
                 });
             },
-            signup: function (query, callback) {
-                var apiPath = "/api/users/signup";
+            signin: function (query, callback) {
+                var apiPath = "/api/users/signin";
 
                 $ajax.request($api.apiUrl + apiPath, {method: "POST", data: query}, function (err, res) {
                     callback(err, res);

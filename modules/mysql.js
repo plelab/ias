@@ -21,16 +21,16 @@ var initialize = function (config) {
                 return;
             }
 
-            res.origin_send = res.send;
+            res.origin_json = res.json;
 
-            res.send = function (contents) {
+            res.json = function (contents) {
                 try {
                     req.mysql.release();
                 } catch (err) {
                     console.log("[MySQL_Warning] MySQL Connection Already Release.");
                 }
 
-                res.origin_send(contents);
+                res.origin_json(contents);
             };
 
             req.sql = function (query, values, callback) {

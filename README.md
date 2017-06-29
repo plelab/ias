@@ -53,6 +53,7 @@ Install NodeJS from [NodeJS Official Site](https://nodejs.org/)
 1. rename express/config-sample.json -> express/config.json
 2. Settings config.json
 3. Execute Command.
+    # npm install
     # node ias-cli init     // npm install / bower install Automation.
     # node ias-cli build    // Pug, Less Compile / Distribution.
     # node ias-cli watch    // Tracking Pug, Less Files(Build, Dist Automation).

@@ -1,5 +1,7 @@
+var path = require("path");
+
 var status404 = function (err, req, res) {
-    res.redirect("/error/404.html");
+    res.sendFile(path.join(__dirname, "../www/error/404.html"));
 };
 
 var error = {};

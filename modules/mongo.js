@@ -7,16 +7,16 @@ var initialize = function (config) {
         conn.on("error", console.error.bind(console, "Mongoose Connection Error!"));
         conn.on("open", function () {
             req.mongoose = conn;
-            res.origin_send = res.send;
+            res.origin_json = res.json;
 
-            res.send = function (contents) {
+            res.json = function (contents) {
                 try {
                     req.mongoose.close();
                 } catch (err) {
                     console.log(err);
                 }
 
-                res.origin_send(contents);
+                res.origin_json(contents);
             };
 
             next();

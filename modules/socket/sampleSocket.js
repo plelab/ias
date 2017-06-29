@@ -2,7 +2,7 @@ var initialize = function (io, socket) {
     socket.on("message", function (message) {
         console.log("Message from Client : " + message);
         socket.emit("message", "Echo Message : " + message);
-        console.log("Echo Message : " + message + "Complete.");
+        console.log("Echo Message : " + message + " Complete.");
     });
 };
 

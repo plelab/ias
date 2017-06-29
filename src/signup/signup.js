@@ -24,6 +24,8 @@ var signup = function () {
         }
     }
 
+    delete data.chkPasswd;
+
     $api.apiList.users.signup(data, function (err, res) {
         if (err || res.status == false) {
             alert("회원가입에 실패하였습니다. 관리자에게 문의해주세요.");

@@ -3,9 +3,9 @@ var router = express.Router();
 
 router.get("/", function (req, res, next) {
     if (req.isAuthenticated())
-        res.send({status: true, code: 1, contents: "Session Valid."});
+        res.json({status: true, code: 1, contents: "Session Valid."});
     else
-        res.send({status: true, code: 2, contents: "Session Invalid."});
+        res.json({status: true, code: 2, contents: "Session Invalid."});
 });
 
 module.exports = router;

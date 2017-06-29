@@ -7,7 +7,6 @@ var UserSchema = require("../../modules/schema/user");
 
 router.post("/", function (req, res, next) {
     var data = req.body;
-    delete data.chkPasswd;
 
     var salt = bcrypt.genSaltSync(10);
     data.passwd = bcrypt.hashSync(data.passwd, salt);
@@ -17,11 +16,11 @@ router.post("/", function (req, res, next) {
 
     user.save(function (err, info) {
         if (err) {
-            res.send({status: false, code: 1, contents: err});
+            res.json({status: false, code: 1, contents: err});
             return;
         }
 
-        res.send({status: true, code: 1, contents: info});
+        res.json({status: true, code: 1, contents: info});
     });
 });
 
